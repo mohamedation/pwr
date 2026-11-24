@@ -1,8 +1,3 @@
-#
-# SPDX-FileCopyrightText: 2026 M5Stack Technology CO LTD
-#
-# SPDX-License-Identifier: MIT
-#
 # CardputerZero aarch64 cross toolchain.
 # The BSP under .cache/sdk_bsp-src is a sysroot: it contains target headers,
 # target libraries, startup objects, and pkg-config metadata, but no CMake project.

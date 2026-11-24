@@ -1,7 +1,3 @@
-#
-# SPDX-FileCopyrightText: 2026 M5Stack Technology CO LTD
-#
-# SPDX-License-Identifier: MIT
 # Packaging and install layout for CardputerZero Debian builds.
 
 include(GNUInstallDirs)
