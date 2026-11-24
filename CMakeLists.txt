@@ -1,9 +1,3 @@
-#
-# SPDX-FileCopyrightText: 2026 M5Stack Technology CO LTD
-#
-# SPDX-License-Identifier: MIT
-#
-
 cmake_minimum_required(VERSION 3.31)
 
 project(pwr VERSION 0.1.0 LANGUAGES C CXX)
