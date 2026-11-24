@@ -1,0 +1,34 @@
+{
+  "app_name": "PWR",
+  "package_name": "pwr",
+  "version": "0.1.0",
+  "description": "Shut down or restart Cardputer Zero",
+
+  "store": {
+    "summary": "Shut down or restart your Cardputer Zero",
+    "description": "Confirm, then safely shut down or restart the device from APPLaunch.",
+    "categories": ["System Tools"],
+    "screenshots": [
+      "screenshot/store-home-dark.png",
+      "screenshot/store-confirm-dark.png",
+      "screenshot/store-home-light.png"
+    ],
+    "icon": "assets/images/pwr-store.png",
+    "license": "MIT",
+    "source_repo": "https://github.com/mohamedation/pwr",
+    "author": {
+      "github": "mohamedation",
+      "display_name": "mohamedation"
+    },
+    "share_code": "POWR",
+    "permissions": {
+      "camera": false,
+      "microphone": false,
+      "imu": false,
+      "network": false,
+      "additional_hardware": false,
+      "background_service": false,
+      "external_display": false
+    }
+  }
+}
