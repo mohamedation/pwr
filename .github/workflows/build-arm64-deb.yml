@@ -1,0 +1,105 @@
+name: Build arm64 deb
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-arm64-deb-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: Cross-build arm64 .deb
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install CMake 3.31+
+        run: |
+          sudo snap install cmake --classic
+          echo "/snap/bin" >> "$GITHUB_PATH"
+          cmake --version
+
+      - name: Install cross-build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            ninja-build \
+            crossbuild-essential-arm64 \
+            dpkg-dev \
+            pkg-config \
+            ca-certificates \
+            curl \
+            git
+
+      - name: Cache BSP and FetchContent deps
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: cp0-cross-${{ runner.os }}-${{ hashFiles('cmake/toolchains/cp0-aarch64-linux-gnu.cmake', 'CMakeLists.txt', 'CMakePresets.json') }}
+          restore-keys: |
+            cp0-cross-${{ runner.os }}-
+
+      - name: Configure, build, and package
+        run: cmake --workflow --preset cp0-cross-package
+
+      - name: Verify package
+        id: package
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          packages=(dist/*_arm64.deb)
+          if [[ ${#packages[@]} -eq 0 ]]; then
+            echo "No dist/*_arm64.deb produced" >&2
+            ls -la dist || true
+            exit 1
+          fi
+          if [[ ${#packages[@]} -ne 1 ]]; then
+            echo "Expected exactly one arm64 .deb, found:" >&2
+            printf '  %s\n' "${packages[@]}" >&2
+            exit 1
+          fi
+          package="${packages[0]}"
+          arch="$(dpkg-deb --field "${package}" Architecture)"
+          if [[ "${arch}" != "arm64" ]]; then
+            echo "Package architecture is ${arch}, expected arm64" >&2
+            exit 1
+          fi
+          echo "Built ${package}"
+          dpkg-deb --info "${package}"
+          dpkg-deb --contents "${package}"
+          echo "path=${package}" >> "${GITHUB_OUTPUT}"
+          echo "name=$(basename "${package}")" >> "${GITHUB_OUTPUT}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pwr-arm64-deb
+          path: ${{ steps.package.outputs.path }}
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Job summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" << EOF
+          ## PWR arm64 package
+
+          | Item | Value |
+          | --- | --- |
+          | File | \`${{ steps.package.outputs.name }}\` |
+          | Artifact | \`pwr-arm64-deb\` |
+          | Architecture | arm64 |
+
+          Download the **pwr-arm64-deb** artifact from this run, then install on device or publish with \`czdev\`.
+          EOF
