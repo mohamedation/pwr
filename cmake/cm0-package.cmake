@@ -31,6 +31,7 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets/fonts/"
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets/images/"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/${APP_NAME}/images"
     PATTERN ".DS_Store" EXCLUDE
+    PATTERN "cp0-*.png" EXCLUDE
 )
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets/images/"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/APPLaunch/share/images"
