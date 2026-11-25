@@ -2,7 +2,7 @@
 
 A small APPLaunch app for **Cardputer Zero**: pick Restart or Shut down, confirm, done.
 
-It asks once, then runs the usual `systemctl reboot` / `systemctl poweroff` path. Store share code: **POWR**.
+It runs the usual `systemctl reboot` / `systemctl poweroff` path so in a sense, it is just a launcher wrapper.
 
 <p align="center">
   <img src="./screenshot/store-home-dark.png" alt="PWR home screen" width="320" />
