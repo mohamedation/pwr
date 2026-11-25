@@ -109,7 +109,7 @@ public:
           toast_(std::make_unique<view::widgets::Toast>(lv_layer_top(), view_model, assets)),
           help_popup_(std::make_unique<view::widgets::HelpPopup>(lv_layer_top(), view_model, assets)) {
         toast_->build();
-        help_popup_->build();
+        // HelpPopup builds on first show() — keep cold start free of its widget tree.
         platform::set_global_key_listener(global_key_listener, this);
         platform::set_key_release_listener(key_release_listener, this);
     }
