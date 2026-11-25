@@ -24,13 +24,6 @@
 namespace app {
 namespace {
 
-#if !USE_DESKTOP
-constexpr const char* kNotoSansCjkRegular =
-    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc";
-constexpr const char* kNotoSansCjkBold =
-    "/usr/share/fonts/opentype/noto/NotoSansCJK-Medium.ttc";
-#endif
-
 bool path_exists(const std::filesystem::path& path) {
     std::error_code ec;
     return std::filesystem::exists(path, ec);
@@ -42,32 +35,31 @@ std::filesystem::path weakly_canonical_path(const std::filesystem::path& path) {
     return ec ? path.lexically_normal() : canonical;
 }
 
-#if !USE_DESKTOP
-const lv_font_t* fallback_font(uint32_t size) {
+/** Built-in Montserrat (compiled into LVGL). Snaps to nearest available size. */
+lv_font_t* montserrat_font(uint32_t size) {
     if (size <= 10) {
-        return &lv_font_montserrat_10;
+        return const_cast<lv_font_t*>(&lv_font_montserrat_10);
     }
     if (size <= 12) {
-        return &lv_font_montserrat_12;
+        return const_cast<lv_font_t*>(&lv_font_montserrat_12);
     }
     if (size <= 14) {
-        return &lv_font_montserrat_14;
+        return const_cast<lv_font_t*>(&lv_font_montserrat_14);
     }
     if (size <= 16) {
-        return &lv_font_montserrat_16;
+        return const_cast<lv_font_t*>(&lv_font_montserrat_16);
     }
     if (size <= 18) {
-        return &lv_font_montserrat_18;
+        return const_cast<lv_font_t*>(&lv_font_montserrat_18);
     }
     if (size <= 20) {
-        return &lv_font_montserrat_20;
+        return const_cast<lv_font_t*>(&lv_font_montserrat_20);
     }
     if (size <= 24) {
-        return &lv_font_montserrat_24;
+        return const_cast<lv_font_t*>(&lv_font_montserrat_24);
     }
-    return &lv_font_montserrat_28;
+    return const_cast<lv_font_t*>(&lv_font_montserrat_28);
 }
-#endif
 
 }
 struct AssetManager::LoadedFont {
@@ -161,20 +153,10 @@ lv_font_t* AssetManager::load_font(const std::filesystem::path& file_name, uint3
 }
 
 lv_font_t* AssetManager::load_standard_font(uint32_t size, StandardFontWeight weight) {
-#if USE_DESKTOP
-    LV_UNUSED(size);
+    // Latin UI only — use compiled-in Montserrat (no FreeType / Noto CJK open).
+    // Weight is unused: LVGL ships a single Montserrat face per size. and we dont need to support bold.
     LV_UNUSED(weight);
-    return nullptr;
-#else
-    const char* path = weight == StandardFontWeight::Regular
-                           ? kNotoSansCjkRegular
-                           : kNotoSansCjkBold;
-    auto* font = load_font(path, size);
-    if (font) {
-        font->fallback = fallback_font(size);
-    }
-    return font;
-#endif
+    return montserrat_font(size);
 }
 
 void AssetManager::add_root_if_valid(std::filesystem::path path) {
