@@ -29,8 +29,6 @@ Grab an arm64 `.deb` from [Releases](https://github.com/mohamedation/pwr/release
 sudo apt install --no-install-recommends ./PWR_0.1.0_rev1_arm64.deb
 ```
 
-Building from source, packaging, the desktop simulator, and store publish steps live in [development.md](./development.md).
-
 ## License
 
 MIT — see [LICENSE](./LICENSE). Third-party font licenses are in `assets/fonts/LICENSE.txt`.

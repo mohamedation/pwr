@@ -1,6 +1,6 @@
 {
-  "name": "pwr-simulator-on-windows",
-  "version": "1.0.0",
+  "name": "pwr",
+  "version": "0.1.0",
   "dependencies": [
     "fmt",
     "libpng",
