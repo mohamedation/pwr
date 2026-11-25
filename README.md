@@ -1,8 +1,8 @@
 # PWR
 
-A small APPLaunch app for **Cardputer Zero**: pick Restart or Shut down, confirm, done.
+A small APPLaunch app for **Cardputer Zero**: Restart or Shut down with confirmation.
 
-It runs the usual `systemctl reboot` / `systemctl poweroff` path so in a sense, it is just a launcher wrapper.
+It runs the usual `systemctl reboot` / `systemctl poweroff` path so in a sense, it is just a bloated launcher wrapper. the power button should shut the system first, but sometimes we need that feeling that it is done the right way.
 
 <p align="center">
   <img src="./screenshot/store-home-dark.png" alt="PWR home screen" width="320" />
@@ -20,7 +20,6 @@ It runs the usual `systemctl reboot` / `systemctl poweroff` path so in a sense, 
 | hold `ESC` / `4` | Exit | — |
 | `ESC` | — | Cancel |
 
-You can also tap an icon to jump straight to its confirm screen.
 
 ## Install
 
