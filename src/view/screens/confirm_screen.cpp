@@ -87,6 +87,7 @@ void ConfirmScreen::build_content(lv_obj_t* content) {
     auto* icon_font = assets().load_font("Phosphor-Fill.ttf", 40);
     lv_obj_set_style_text_font(icon, icon_font ? icon_font : &lv_font_montserrat_28, 0);
     lv_obj_center(icon);
+    lv_obj_align(icon, LV_ALIGN_CENTER, 5, 1);
 
     auto* binding = new ConfirmIconBinding{&view_model(), icon, ring};
     lv_obj_add_event_cb(group, cleanup_confirm_binding, LV_EVENT_DELETE, binding);

@@ -96,6 +96,7 @@ ActionTile* make_action_tile(lv_obj_t* parent,
     tile->icon = lv_label_create(tile->card);
     lv_label_set_text(tile->icon, icon);
     lv_obj_set_style_text_font(tile->icon, icon_font ? icon_font : &lv_font_montserrat_28, 0);
+    lv_obj_set_style_translate_x(tile->icon, 5, 0);  // +right / -left
 
     tile->caption = lv_label_create(tile->card);
     lv_label_set_text(tile->caption, caption);
